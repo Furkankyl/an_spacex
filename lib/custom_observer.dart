@@ -6,7 +6,6 @@ class CustomObserver extends BlocObserver {
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
 
     super.onError(bloc, error, stackTrace);
-    print('onError $error');
   }
 
   @override
@@ -17,14 +16,10 @@ class CustomObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    if (bloc is! Bloc) {
-      print('onTransition $change');
-    }
   }
 
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    print('onEvent $event');
   }
 }

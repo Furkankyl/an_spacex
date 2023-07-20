@@ -1,6 +1,9 @@
+import 'package:an_spacex/blocs/launch/launch_bloc.dart';
+import 'package:an_spacex/blocs/launch/launch_event.dart';
 import 'package:an_spacex/blocs/launch_list/launch_list_bloc.dart';
 import 'package:an_spacex/blocs/launch_list/launch_list_event.dart';
-import 'package:an_spacex/screens/launch_list_page.dart';
+import 'package:an_spacex/screens/last_launch/last_launch_page.dart';
+import 'package:an_spacex/screens/list/launch_list_page.dart';
 import 'package:an_spacex/widgets/custom_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,10 +27,6 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("SpaceX"),
-        centerTitle: true,
-      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
@@ -49,7 +48,10 @@ class _MenuPageState extends State<MenuPage> {
   Widget getWidgetByIndex() {
     switch (currentIndex) {
       case 0:
-        return const SizedBox();
+        return BlocProvider<LaunchBloc>(
+          create: (context) => LaunchBloc()..add(FetchLaunch()),
+          child: const LastLaunchPage(),
+        );
       case 1:
         return BlocProvider<LaunchListBloc>(
           create: (context) => LaunchListBloc()..add(FetchLaunchList()),

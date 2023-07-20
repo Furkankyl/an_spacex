@@ -1,8 +1,12 @@
+import 'package:an_spacex/blocs/launch/launch_bloc.dart';
+import 'package:an_spacex/blocs/launch/launch_event.dart';
 import 'package:an_spacex/models/launch_data.dart';
-import 'package:an_spacex/screens/launch_detail_page.dart';
+import 'package:an_spacex/screens/list/launch_detail_page.dart';
+import 'package:an_spacex/widgets/custom_animate.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:translator/translator.dart';
@@ -18,18 +22,19 @@ class LaunchListItem extends StatelessWidget {
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       closedColor: Theme.of(context).scaffoldBackgroundColor,
-      openColor: Colors.transparent,
+      openColor: Colors.black,
       closedShape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       closedElevation: 0,
       transitionDuration: const Duration(milliseconds: 500),
       openBuilder: (BuildContext context, VoidCallback _) {
-        return LaunchDetailPage(
-          launchData: launchData,
+        return BlocProvider(
+          create: (_) => LaunchBloc()..add(FetchLaunch(launchData: launchData)),
+          child: const LaunchDetailPage(),
         );
       },
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
-        return Animate(
+        return CustomAnimate(
           effects: const [
             FadeEffect(
                 duration: Duration(milliseconds: 500),
@@ -58,7 +63,7 @@ class LaunchListItem extends StatelessWidget {
                 children: [
                   Expanded(
                       flex: 1,
-                      child: Animate(
+                      child: CustomAnimate(
                           effects: const [
                             FadeEffect(
                                 duration: Duration(milliseconds: 500),
@@ -66,10 +71,13 @@ class LaunchListItem extends StatelessWidget {
                           ],
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              launchData.links?.patch?.small ??
-                                  "https://www.spacex.com/static/images/share.jpg",
-                              fit: BoxFit.cover,
+                            child: Hero(
+                              tag: launchData.id!,
+                              child: Image.network(
+                                launchData.links?.patch?.small ??
+                                    "https://www.spacex.com/static/images/share.jpg",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ))),
                   const SizedBox(
@@ -90,7 +98,7 @@ class LaunchListItem extends StatelessWidget {
   }
 
   Widget launchInfoItems(var openContainer) {
-    return Animate(
+    return CustomAnimate(
       effects: const [
         SlideEffect(
             begin: Offset(0, -.2),
@@ -117,7 +125,7 @@ class LaunchListItem extends StatelessWidget {
                     from: "en", to: "tr"),
                 initialData: launchData.details ?? "",
                 builder: (context, snapsot) {
-                  if (!snapsot.hasData) {
+                  if (!snapsot.hasData || snapsot.data.toString().isEmpty) {
                     return const SizedBox();
                   }
 

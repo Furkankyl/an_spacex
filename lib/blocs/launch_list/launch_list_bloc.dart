@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LaunchListBloc extends Bloc<LaunchListEvent, LaunchListState> {
   LaunchListBloc() : super(InitialState()) {
     on<FetchLaunchList>((event, emit) async{
-      print("TEST"+event.toString());
       emit.call(await mapEventToState(event).first);
     });
   }
@@ -15,7 +14,7 @@ class LaunchListBloc extends Bloc<LaunchListEvent, LaunchListState> {
     if (event is FetchLaunchList) {
       final response = await CoreService.getAllLaunchData();
       if (response != null) {
-        yield Fetched(response);
+        yield Fetched(response.sublist(0,event.count));
       } else {
         yield Failure();
       }
