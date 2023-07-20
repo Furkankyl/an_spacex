@@ -1,9 +1,11 @@
-import 'package:an_spacex/screens/home_page.dart';
+import 'package:an_spacex/custom_observer.dart';
 import 'package:an_spacex/screens/menu_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  Bloc.observer = CustomObserver();
   initializeDateFormatting("tr_TR");
   runApp(const MyApp());
 }
@@ -17,7 +19,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SpaceX',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         scaffoldBackgroundColor: Colors.transparent,
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.black,

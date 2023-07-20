@@ -1,7 +1,10 @@
-import 'package:an_spacex/screens/home_page.dart';
+import 'package:an_spacex/blocs/launch_list/launch_list_bloc.dart';
+import 'package:an_spacex/blocs/launch_list/launch_list_event.dart';
+import 'package:an_spacex/screens/launch_list_page.dart';
 import 'package:an_spacex/widgets/custom_background.dart';
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -14,10 +17,15 @@ class _MenuPageState extends State<MenuPage> {
   int currentIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SpaceX"),
+        title: const Text("SpaceX"),
         centerTitle: true,
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -27,38 +35,28 @@ class _MenuPageState extends State<MenuPage> {
             currentIndex = index;
           });
         },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Launches"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana Sayfa"),
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.shuttleSpace), label: "Son Görev"),
+          BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.rocket), label: "Görevler"),
         ],
       ),
-      body: PageTransitionSwitcher(
-        duration: const Duration(milliseconds: 500),
-        transitionBuilder: (
-            Widget child,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            ) {
-          return FadeThroughTransition(
-            animation: animation,
-            secondaryAnimation: secondaryAnimation,
-            fillColor: Colors.transparent,
-            child: child,
-          );
-        },
-        child: CustomBackground(child: getWidgetByIndex()),
-      ),
+      body: CustomBackground(child: getWidgetByIndex()),
     );
   }
 
   Widget getWidgetByIndex() {
     switch (currentIndex) {
       case 0:
-        return HomePage();
+        return const SizedBox();
       case 1:
-        return SizedBox();
+        return BlocProvider<LaunchListBloc>(
+          create: (context) => LaunchListBloc()..add(FetchLaunchList()),
+          child: const LaunchListPage(),
+        );
       default:
-        return HomePage();
+        return const LaunchListPage();
     }
   }
 }
