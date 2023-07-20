@@ -78,8 +78,7 @@ class _LastLaunchPageState extends State<LastLaunchPage>
             child: Image.network(
               state.launchData.links?.patch?.large ??
                   "https://www.spacex.com/static/images/share.jpg",
-              // Fotoğrafın URL'si
-              fit: BoxFit.cover, // Boyutlandırma seçeneği
+              fit: BoxFit.cover,
             ),
           ),
         ),
@@ -103,7 +102,6 @@ class _LastLaunchPageState extends State<LastLaunchPage>
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: false,
-      //TODO CREATE CUSTOM HEADER
       header: CustomHeader(
         builder: (context, RefreshStatus? status) {
           return const SizedBox(

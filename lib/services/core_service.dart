@@ -18,7 +18,10 @@ class CoreService {
     return null;
   }
 
-  static Future<List<LaunchData>?> getAllLaunchData() async {
+  ///VERİYİ SAYIYA GÖRE ÇEKMEK İÇİN `Api-Key` GEREKEKİYOR
+  ///`SpaceX API Docs` [https://documenter.getpostman.com/view/2025350/RWaEzAiG]
+  ///O YÜZDEN [dataCount] TANIMLAYIP SAYIYI ARTIRARAK FAKE LOADING YAPILDI
+  static Future<List<LaunchData>?> getAllLaunchData(int dataCount) async {
     var url = Uri.parse(Constant.allLaunches);
     var response = await get(url);
     if (response.statusCode == 200) {
@@ -32,7 +35,7 @@ class CoreService {
       });
 
       list.sort((b, a) => a.flightNumber!.compareTo(b.flightNumber!));
-      return list;
+      return list.sublist(0,dataCount);
     }
     return null;
   }

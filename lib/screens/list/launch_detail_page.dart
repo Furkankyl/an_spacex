@@ -1,7 +1,9 @@
 import 'package:an_spacex/blocs/launch/launch_bloc.dart';
 import 'package:an_spacex/blocs/launch/launch_state.dart';
+import 'package:an_spacex/widgets/custom_animate.dart';
 import 'package:an_spacex/widgets/launch_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LaunchDetailPage extends StatefulWidget {
@@ -57,8 +59,6 @@ class _LaunchDetailPageState extends State<LaunchDetailPage>
         expandedHeight: 250,
         floating: true,
         pinned: true,
-        collapsedHeight: 100,
-        backgroundColor: Colors.transparent,
         title: Text(
           state.launchData.name!,
           style: Theme.of(context)
@@ -66,15 +66,28 @@ class _LaunchDetailPageState extends State<LaunchDetailPage>
               .displaySmall!
               .copyWith(color: _isScrolled ? Colors.white : Colors.transparent),
         ),
-        leading: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: BackButton(
-              color: Colors.black,
-            ),
-          ),
-        ),
+        leading: const CustomAnimate(
+            effects: [
+              FadeEffect(
+                delay: Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 500),
+              ),
+              ScaleEffect(
+                delay: Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 500),
+                begin: Offset(0,0),
+                end: Offset(1, 1)
+              )
+            ],
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: BackButton(
+                  color: Colors.black,
+                ),
+              ),
+            )),
         flexibleSpace: FlexibleSpaceBar(
           collapseMode: CollapseMode.parallax,
           background: Hero(
@@ -82,8 +95,7 @@ class _LaunchDetailPageState extends State<LaunchDetailPage>
             child: Image.network(
               state.launchData.links?.patch?.large ??
                   "https://www.spacex.com/static/images/share.jpg",
-              // Fotoğrafın URL'si
-              fit: BoxFit.cover, // Boyutlandırma seçeneği
+              fit: BoxFit.cover,
             ),
           ),
         ),

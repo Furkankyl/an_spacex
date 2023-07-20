@@ -12,9 +12,10 @@ class LaunchListBloc extends Bloc<LaunchListEvent, LaunchListState> {
 
   Stream<LaunchListState> mapEventToState(LaunchListEvent event) async* {
     if (event is FetchLaunchList) {
-      final response = await CoreService.getAllLaunchData();
+
+     final response = await CoreService.getAllLaunchData(event.count);
       if (response != null) {
-        yield Fetched(response.sublist(0,event.count));
+        yield Fetched(response);
       } else {
         yield Failure();
       }

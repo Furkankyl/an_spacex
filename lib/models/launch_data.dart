@@ -1,4 +1,6 @@
 
+///Bu obje [https://javiercbk.github.io/json_to_dart/]
+///Kullanılarak oluşturuldu
 class LaunchData {
   Fairings? fairings;
   Links? links;
@@ -10,7 +12,7 @@ class LaunchData {
   bool? success;
   List<Failures>? failures;
   String? details;
-  ///FOR LOCALE TRANSLATE
+  ///[detailsLocale] FOR LOCALE TRANSLATE
   String? detailsLocale;
   List<String>? crew;
   List<String>? ships;

@@ -13,6 +13,8 @@ import 'package:translator/translator.dart';
 
 class LaunchListItem extends StatelessWidget {
   final LaunchData launchData;
+
+  ///[LaunchData.details] metnini türkçeye çevirmek için
   final translator = GoogleTranslator();
 
   LaunchListItem({Key? key, required this.launchData}) : super(key: key);
@@ -34,77 +36,86 @@ class LaunchListItem extends StatelessWidget {
         );
       },
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
-        return CustomAnimate(
-          effects: const [
-            FadeEffect(
-                duration: Duration(milliseconds: 500),
-                delay: Duration(milliseconds: 200)),
-            SlideEffect(
-                begin: Offset(-1, 0),
-                end: Offset(0, 0),
-                duration: Duration(milliseconds: 500),
-                delay: Duration(milliseconds: 200))
-          ],
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-                color: Colors.white54,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(
-                      spreadRadius: 5,
-                      blurRadius: 5,
-                      offset: Offset(0, 0),
-                      color: Colors.white30)
-                ]),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: CustomAnimate(
-                          effects: const [
-                            FadeEffect(
-                                duration: Duration(milliseconds: 500),
-                                delay: Duration(milliseconds: 700)),
-                          ],
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Hero(
-                              tag: launchData.id!,
-                              child: Image.network(
-                                launchData.links?.patch?.small ??
-                                    "https://www.spacex.com/static/images/share.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ))),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: launchInfoItems(openContainer),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
+        return launchItem(openContainer);
       },
       tappable: false,
+    );
+  }
+
+  ///[openContainer] butona tıklandığında [OpenContainer] widget'inin
+  ///openBuilder metodunu çağırabilmek için
+  Widget launchItem(openContainer) {
+    return CustomAnimate(
+      effects: const [
+        FadeEffect(
+            duration: Duration(milliseconds: 500),
+            delay: Duration(milliseconds: 200)),
+        SlideEffect(
+            begin: Offset(-1, 0),
+            end: Offset(0, 0),
+            duration: Duration(milliseconds: 500),
+            delay: Duration(milliseconds: 200))
+      ],
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+            color: Colors.white54,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: const [
+              BoxShadow(
+                  spreadRadius: 5,
+                  blurRadius: 5,
+                  offset: Offset(0, 0),
+                  color: Colors.white30)
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Expanded(
+                  flex: 1,
+                  child: CustomAnimate(
+                      effects: const [
+                        FadeEffect(
+                            duration: Duration(milliseconds: 500),
+                            delay: Duration(milliseconds: 700)),
+                      ],
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Hero(
+                          tag: launchData.id!,
+                          child: Image.network(
+                            launchData.links?.patch?.small ??
+                                "https://www.spacex.com/static/images/share.jpg",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ))),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                flex: 2,
+                child: launchInfoItems(openContainer),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Widget launchInfoItems(var openContainer) {
     return CustomAnimate(
       effects: const [
+        FadeEffect(
+            delay: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 200)),
         SlideEffect(
             begin: Offset(0, -.2),
             end: Offset(0, 0),
             delay: Duration(milliseconds: 500),
-            duration: Duration(milliseconds: 500))
+            duration: Duration(milliseconds: 200))
       ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
