@@ -13,6 +13,11 @@ class LaunchDetailPage extends StatelessWidget {
     return CustomBackground(
         child: Scaffold(
       appBar: AppBar(title: Text(launchData.name!)),
+      body: ListView(
+        children: [
+
+        ],
+      ),
     ));
   }
 }

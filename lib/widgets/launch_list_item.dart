@@ -19,16 +19,17 @@ class LaunchListItem extends StatelessWidget {
       transitionType: ContainerTransitionType.fade,
       closedColor: Theme.of(context).scaffoldBackgroundColor,
       openColor: Colors.transparent,
-      closedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16)),
+      closedShape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       closedElevation: 0,
       transitionDuration: const Duration(milliseconds: 500),
       openBuilder: (BuildContext context, VoidCallback _) {
-        return LaunchDetailPage(launchData: launchData,);
+        return LaunchDetailPage(
+          launchData: launchData,
+        );
       },
-      closedBuilder:
-          (BuildContext context, VoidCallback openContainer) {
-        return  Animate(
+      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+        return Animate(
           effects: const [
             FadeEffect(
                 duration: Duration(milliseconds: 500),
@@ -86,69 +87,77 @@ class LaunchListItem extends StatelessWidget {
       },
       tappable: false,
     );
-
   }
 
   Widget launchInfoItems(var openContainer) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          launchData.name!,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        if ((launchData.detailsLocale ?? "").isNotEmpty)
-          Text(
-            launchData.detailsLocale!,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        if ((launchData.detailsLocale ?? "").isEmpty)
-          FutureBuilder(
-              future: translator.translate(launchData.details ?? "",
-                  from: "en", to: "tr"),
-              initialData: launchData.details ?? "",
-              builder: (context, snapsot) {
-                if (!snapsot.hasData) {
-                  return const SizedBox();
-                }
-
-                launchData.detailsLocale = snapsot.data.toString();
-
-                return Text(
-                  launchData.detailsLocale ?? "",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                );
-              }),
-        const SizedBox(
-          height: 8,
-        ),
-        Text("Numara: ${launchData.flightNumber.toString()}"),
-        Text("Referans: ${launchData.id ?? ""}"),
-        Text(
-            "Tarih: ${DateFormat("dd MMMM yyyy", "tr_TR").format(DateTime.fromMillisecondsSinceEpoch(launchData.dateUnix! * 1000))}"),
-        Text(
-            "Saat: ${DateFormat("HH:mm", "tr_TR").format(DateTime.fromMillisecondsSinceEpoch(launchData.dateUnix! * 1000))}"),
-        const SizedBox(
-          height: 8,
-        ),
-        launchInfoBottomRow(),
-        const SizedBox(
-          height: 8,
-        ),
-        SizedBox(
-          width: double.infinity,
-          height: 30,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white),
-            onPressed: openContainer,
-            child: const Text("Görüntüle"),
-          ),
-        )
+    return Animate(
+      effects: const [
+        SlideEffect(
+            begin: Offset(0, -.2),
+            end: Offset(0, 0),
+            delay: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 500))
       ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            launchData.name!,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          if ((launchData.detailsLocale ?? "").isNotEmpty)
+            Text(
+              launchData.detailsLocale!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          if ((launchData.detailsLocale ?? "").isEmpty)
+            FutureBuilder(
+                future: translator.translate(launchData.details ?? "",
+                    from: "en", to: "tr"),
+                initialData: launchData.details ?? "",
+                builder: (context, snapsot) {
+                  if (!snapsot.hasData) {
+                    return const SizedBox();
+                  }
+
+                  launchData.detailsLocale = snapsot.data.toString();
+
+                  return Text(
+                    launchData.detailsLocale ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  );
+                }),
+          const SizedBox(
+            height: 8,
+          ),
+          Text("Numara: ${launchData.flightNumber.toString()}"),
+          Text("Referans: ${launchData.id ?? ""}"),
+          Text(
+              "Tarih: ${DateFormat("dd MMMM yyyy", "tr_TR").format(DateTime.fromMillisecondsSinceEpoch(launchData.dateUnix! * 1000))}"),
+          Text(
+              "Saat: ${DateFormat("HH:mm", "tr_TR").format(DateTime.fromMillisecondsSinceEpoch(launchData.dateUnix! * 1000))}"),
+          const SizedBox(
+            height: 8,
+          ),
+          launchInfoBottomRow(),
+          const SizedBox(
+            height: 8,
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: 30,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white),
+              onPressed: openContainer,
+              child: const Text("Görüntüle"),
+            ),
+          )
+        ],
+      ),
     );
   }
 

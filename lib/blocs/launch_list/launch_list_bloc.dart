@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LaunchListBloc extends Bloc<LaunchListEvent, LaunchListState> {
   LaunchListBloc() : super(InitialState()) {
     on<FetchLaunchList>((event, emit) async{
+      print("TEST"+event.toString());
       emit.call(await mapEventToState(event).first);
     });
   }
